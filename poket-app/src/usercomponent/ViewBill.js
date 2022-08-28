@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import BillHeader from "./BillHeader";
 
 export default function ViewBill() {
+  
   return (
-    <div>ViewBill</div>
-  )
+    <div>
+      <BillHeader />
+    </div>
+  );
 }

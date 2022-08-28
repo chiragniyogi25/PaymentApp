@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../api/AxiosInstance";
-import { LoginContext } from "../Helper/Context";
+import { JWTContext, LoginContext } from "../Helper/Context";
 
 export default function Login() {
   const LOGIN_URL = "/login";
@@ -9,9 +10,10 @@ export default function Login() {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const {loggedIn,setLoggedIn}=useContext(LoginContext);
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  const { accessToken, setAccessToken } = useContext(JWTContext);
 
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setErrMsg("");
@@ -35,25 +37,30 @@ export default function Login() {
       setEmail("");
       setPassword("");
       setSuccess(true);
-      localStorage.setItem('token', response.data.jwt);
+      localStorage.setItem("token", response.data.jwt);
       setLoggedIn(true);
-      
+      console.log(response.data.jwt);
+      setAccessToken(response.data.jwt);
+      navigate("/userDashboard");
+
+      // console.log(accessToken);
     } catch (err) {
       let val = err.reponse;
       let c = err.response.status;
-      if (val === undefined) {
+      if (val === undefined && c !== 403) {
         setErrMsg("No Server Response");
-      } else {
+      } else if (c == 403) {
         setErrMsg("Please Enter Valid Credentials");
+      } else {
+        setErrMsg("Login Failed");
       }
       setSuccess(false);
       setLoggedIn(false);
     }
   };
-  return (
-    (success||loggedIn)?
+  return success || loggedIn ? (
     <></>
-    :(
+  ) : (
     <div className="container-fluid my-3">
       <div className="row">
         <div className="col-md-4 offset-md-3">
@@ -108,6 +115,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-    )
   );
 }

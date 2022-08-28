@@ -26,7 +26,7 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link
-                className="nav-link active"
+                className="nav-link"
                 aria-current="page"
                 to="/user-dashboard/viewbill"
               >

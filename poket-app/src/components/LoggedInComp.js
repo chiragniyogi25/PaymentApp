@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { LoginContext } from "../Helper/Context";
 
 const LoggedInComp = () => {
-  const {loggedIn,setLoggedIn}=useContext(LoginContext);
-  const logOutFnc=(e)=>{
-    localStorage.removeItem('token');
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
+  const logOutFnc = (e) => {
+    localStorage.removeItem("token");
     setLoggedIn(false);
-  }
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -28,8 +28,7 @@ const LoggedInComp = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul
-            className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link" to="/userDashboard">
                 DashBoard
@@ -45,10 +44,14 @@ const LoggedInComp = () => {
                 View Statement
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/addMoney">
+                Add Money
+              </Link>
+            </li>
           </ul>
-          
-          <ul
-            className="navbar-nav me-auto mb-2 mb-lg-0">
+
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link" onClick={logOutFnc} to="/login">
                 Logout

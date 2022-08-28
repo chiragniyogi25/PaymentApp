@@ -8,7 +8,6 @@ const Navbar = () => {
 
   return (
     <>
-      {console.log(loggedIn)}
       {loggedIn ? <LoggedInComp /> : <LoggedOutComp />}
     </>
   );
