@@ -7,6 +7,7 @@ import com.miniproject.payment.app.dto.UserDTO;
 import com.miniproject.payment.app.entity.RecurringPayments;
 import com.miniproject.payment.app.entity.Transactions;
 import com.miniproject.payment.app.entity.User;
+import com.miniproject.payment.app.pdfExporter.UploadFile;
 import com.miniproject.payment.app.repository.RecurringPaymentsRepository;
 import com.miniproject.payment.app.repository.TransactionRepository;
 import com.miniproject.payment.app.repository.UserRepository;
@@ -20,12 +21,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,6 +85,7 @@ public class UserService {
 
     public List<UserDTO> getAllUsers(){
         List<UserDTO> users=new ArrayList<>();
+
         userRepository.findAll()
                 .stream()
                 .forEach((u)->{
@@ -232,6 +236,23 @@ public class UserService {
                 str.append(list_of_desc.get(i)+", ");
         }
         return str.toString();
+    }
+
+    public void save(int userId,MultipartFile file){
+        try{
+
+            User user = userRepository.findById(userId).get();
+            List<RecurringPaymentsDTO> bills=UploadFile.convertExcelToList(user,file.getInputStream());
+            List<RecurringPayments> list_of_bills=new ArrayList<>();
+            bills.forEach((dto)->{
+                RecurringPayments bill=modelMapper.map(dto,RecurringPayments.class);
+                bill.setUser(user);
+                list_of_bills.add(bill);
+            });
+            recurringPaymentsRepository.saveAll(list_of_bills);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
     //Criteria Query ->Getting error here
 //    @Transactional
