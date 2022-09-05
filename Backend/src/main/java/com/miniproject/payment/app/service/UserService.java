@@ -51,6 +51,14 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     ModelMapper modelMapper;
+
+    public User getUser(int userId){
+        return userRepository.findById(userId).get();
+    }
+    @Transactional
+    public void updateUser(User user){
+        userRepository.save(user);
+    }
     @Transactional
     public String saveUser(UserDTO userdTo){
         User user = modelMapper.map(userdTo, User.class);
