@@ -105,6 +105,7 @@ public class UserController {
         return userService.removeRecurringPayment(myUserDetail.getId(), recc_id);
     }
 
+    
     @PutMapping("/payment-monthly")
     public String payMonthlyPayments(Authentication authentication){
         CustomUserDetail myUserDetails = (CustomUserDetail) authentication.getPrincipal();
