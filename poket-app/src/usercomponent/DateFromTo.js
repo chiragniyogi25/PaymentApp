@@ -1,30 +1,49 @@
+import axios from "axios";
 import React, { useContext, useEffect } from "react";
 import AxiosInstance from "../api/AxiosInstance";
 import { DateContext, JWTContext, StatementContext } from "../Helper/Context";
 
 export default function DateFromTo() {
+  const PDF_URL = "/viewStatements/pdf/";
   const STATEMENT_URL = "/statement";
   const { startDate, setStartDate, endDate, setEndDate } =
     useContext(DateContext);
   const { accessToken } = useContext(JWTContext);
-  const {  statement,setStatement } = useContext(StatementContext);
+  const { statement, setStatement } = useContext(StatementContext);
   //   const [statement, setStatement] = useState([]);
 
   useEffect(() => {
     setStartDate(startDate);
-    let parts = startDate.split("-");
-    let mydate = new Date(parts[0], parts[1] - 1, parts[2]);
   }, [startDate]);
 
   useEffect(() => {
     setEndDate(endDate);
-    let parts = endDate.split("-");
-    let mydate = new Date(parts[0], parts[1] - 1, parts[2]);
   }, [endDate]);
 
-  const download=()=>{
+ 
+  const download = () => {
+    let parts = startDate.split("-");
+    let mydate1 = parts[2] + "-" + parts[1] + "-" + parts[0];
 
-  }
+    parts = endDate.split("-");
+    let mydate2 = parts[2] + "-" + parts[1] + "-" + parts[0];
+    axios({
+      url: `http://localhost:8080/viewStatements/pdf/${mydate1}/${mydate2}`, //your url
+      method: "GET",
+      responseType: "blob", // important
+      headers: {
+        // "Content-Type": "application/pdf",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).then((response) => {
+      const data = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = data;
+      link.setAttribute("download", `${mydate1}To${mydate2}.pdf`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
   const submitDate = async () => {
     try {
       const data = {
@@ -114,7 +133,7 @@ export default function DateFromTo() {
           </div>
           <div className="col">
             <button
-              disabled={statement.length==0 ? true : false}
+              disabled={statement.length == 0 ? true : false}
               type="button"
               onClick={download}
               className="btn btn-secondary my-4"

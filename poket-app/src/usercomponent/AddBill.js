@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AddBillsContext } from "../Helper/Context";
 import BillDesc from "./BillDesc";
+import MultipleBills from "./MultipleBills";
 import TimesAmountBill from "./TimesAmountBill";
 
 export default function AddBill() {
@@ -12,7 +13,7 @@ export default function AddBill() {
   const [errMsg, setErrMsg] = useState("");
   useEffect(() => {
     setErr(false);
-    setErrMsg('');
+    setErrMsg("");
   }, [date, times, amount, category]);
   return (
     <div>
@@ -25,7 +26,7 @@ export default function AddBill() {
           <div className="col-md-4 offset-md-4">
             <center
               className={` ${
-                errMsg.length === 0 || errMsg.trim()===""
+                errMsg.length === 0 || errMsg.trim() === ""
                   ? "hidden"
                   : err
                   ? "alert alert-danger"
@@ -53,12 +54,13 @@ export default function AddBill() {
           err,
           setErr,
           errMsg,
-          setErrMsg
+          setErrMsg,
         }}
       >
         <BillDesc />
 
         <TimesAmountBill />
+        <MultipleBills />
       </AddBillsContext.Provider>
     </div>
   );
