@@ -28,39 +28,44 @@ public class Process implements ItemProcessor<RecurringPayments,RecurringPayment
     public RecurringPayments process(RecurringPayments recurringPayments) throws Exception {
         int userId=recurringPayments.getUser().getId();
         User user = userService.getUser(userId);
-        if(recurringPayments.getActive()
-                &&
-                user.getBalance()>=recurringPayments.getAmount()
-                &&
-                (new Date()).after(recurringPayments.getStartDate()) ){
-            Transactions transaction = new Transactions(
-                    "DB", recurringPayments.getDescription(),
-                    recurringPayments.getAmount(), user.getBalance(), user.getBalance()-recurringPayments.getAmount(), user);
-            transactionRepository.save(transaction);
-            user.setBalance(user.getBalance()-recurringPayments.getAmount());
-            userService.updateUser(user);
-            recurringPayments.setNoOfTimes(recurringPayments.getNoOfTimes()-1);
+        while((new Date()).after(recurringPayments.getStartDate())
+                && recurringPayments.getActive()
+                && user.getBalance() >= recurringPayments.getAmount()
+        ) {
+            if (recurringPayments.getActive()
+                    &&
+                    user.getBalance() >= recurringPayments.getAmount()
+                    &&
+                    (new Date()).after(recurringPayments.getStartDate())) {
+                Transactions transaction = new Transactions(
+                        "DB", recurringPayments.getDescription(),
+                        recurringPayments.getAmount(), user.getBalance(), user.getBalance() - recurringPayments.getAmount(), user);
+                transactionRepository.save(transaction);
+                user.setBalance(user.getBalance() - recurringPayments.getAmount());
+                userService.updateUser(user);
+                recurringPayments.setNoOfTimes(recurringPayments.getNoOfTimes() - 1);
 
-            Date date=recurringPayments.getStartDate();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date); // don't forget this if date is arbitrary e.g. 01-01-2014
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            int year = cal.get(Calendar.YEAR);
-            if(month<12)
-                month++;
-            if(month==12){
-                month=1;
-                year++;
+                Date date = recurringPayments.getStartDate();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date); // don't forget this if date is arbitrary e.g. 01-01-2014
+                int month = cal.get(Calendar.MONTH);
+                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                int year = cal.get(Calendar.YEAR);
+                if (month < 12)
+                    month++;
+                else if (month == 12) {
+                    month = 1;
+                    year++;
+                }
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                date = cal.getTime();
+
+                recurringPayments.setStartDate(date);
+                if (recurringPayments.getNoOfTimes() == 0)
+                    recurringPayments.setActive(false);
             }
-            cal.set(Calendar.MONTH,month);
-            cal.set(Calendar.YEAR,year);
-            cal.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-            date=cal.getTime();
-
-            recurringPayments.setStartDate(date);
-            if(recurringPayments.getNoOfTimes()==0)
-                recurringPayments.setActive(false);
         }
         return recurringPayments;
     }
