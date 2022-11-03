@@ -32,11 +32,6 @@ public class Process implements ItemProcessor<RecurringPayments,RecurringPayment
                 && recurringPayments.getActive()
                 && user.getBalance() >= recurringPayments.getAmount()
         ) {
-            if (recurringPayments.getActive()
-                    &&
-                    user.getBalance() >= recurringPayments.getAmount()
-                    &&
-                    (new Date()).after(recurringPayments.getStartDate())) {
                 Transactions transaction = new Transactions(
                         "DB", recurringPayments.getDescription(),
                         recurringPayments.getAmount(), user.getBalance(), user.getBalance() - recurringPayments.getAmount(), user);
@@ -65,7 +60,7 @@ public class Process implements ItemProcessor<RecurringPayments,RecurringPayment
                 recurringPayments.setStartDate(date);
                 if (recurringPayments.getNoOfTimes() == 0)
                     recurringPayments.setActive(false);
-            }
+
         }
         return recurringPayments;
     }

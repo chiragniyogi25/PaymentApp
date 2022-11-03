@@ -26,6 +26,7 @@ public class SecurityConfigMain extends WebSecurityConfigurerAdapter  {
     JwtRequestFilter jwtRequestFilter;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
+
         return new BCryptPasswordEncoder(10);
     }
 //    @Bean
@@ -42,15 +43,16 @@ public class SecurityConfigMain extends WebSecurityConfigurerAdapter  {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/actuator/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/signup","/login","/home").permitAll()
-                .antMatchers(HttpMethod.PUT,"/addMoney").hasRole("USER")
+                .antMatchers(HttpMethod.PUT,"/addMoney").hasRole("USER")//ROLE_USER
                 .antMatchers(HttpMethod.DELETE,"/delete_recurring/*").hasRole("USER")
-                .antMatchers(HttpMethod.POST,"/statement","/recurring_payment").hasRole("USER")
+                .antMatchers(HttpMethod.POST,"/api/upload","/statement","/recurring_payment").hasRole("USER")
                 .antMatchers(HttpMethod.GET,"/recurring_payment").hasRole("USER")
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()//login
                 //since we have a filter telling spring security do create sessions
                 .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);//http stateless
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
     @Override

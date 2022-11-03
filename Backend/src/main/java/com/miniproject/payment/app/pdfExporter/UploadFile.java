@@ -5,9 +5,6 @@ import com.miniproject.payment.app.entity.RecurringPayments;
 import com.miniproject.payment.app.entity.User;
 import com.miniproject.payment.app.jpaAuth.CustomUserDetail;
 import com.miniproject.payment.app.repository.RecurringPaymentsRepository;
-import com.univocity.parsers.common.record.Record;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -37,8 +34,7 @@ public class UploadFile {
 
     //checking that file is of Excel type or not
     public static boolean checkExcelFormat(MultipartFile file){
-        String contentType=file.getContentType();
-        if(contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
+        if(file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")){
             return true;
         }else{
             return false;

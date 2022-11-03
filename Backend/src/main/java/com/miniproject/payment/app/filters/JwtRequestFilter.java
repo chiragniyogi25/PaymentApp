@@ -25,10 +25,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
+
+    //similar to doFilter in JSP
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         final String authorizationHeader=request.getHeader("Authorization");
+        //Bearer accesstoken
 
         String email_id=null;
         String jwt=null;

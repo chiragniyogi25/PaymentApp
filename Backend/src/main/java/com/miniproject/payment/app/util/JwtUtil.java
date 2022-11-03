@@ -19,12 +19,13 @@ public class JwtUtil {
         return extractClaim(token,Claims::getSubject);
     }
     public Date extractExpiration(String token){
+
         return extractClaim(token,Claims::getExpiration);
     }
 
     public <T> T extractClaim(String token, Function<Claims,T> classResolver){
-        final Claims claims=extractAllClaims(token);
-        return classResolver.apply(claims);
+        final Claims claims=extractAllClaims(token);//all user details in JWT
+        return classResolver.apply(claims);//db
     }
     private Claims extractAllClaims(String token){
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
@@ -42,8 +43,8 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*10))
+                .setIssuedAt(new Date(System.currentTimeMillis()))//1st oct ms
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*10))//
                 .signWith(SignatureAlgorithm.HS256,SECRET_KEY).compact();
     }
 

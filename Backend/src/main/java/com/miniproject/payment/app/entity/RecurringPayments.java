@@ -1,12 +1,16 @@
 package com.miniproject.payment.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Entity
+@Getter
+@Setter
 public class RecurringPayments {
 
     @Id
@@ -36,69 +40,64 @@ public class RecurringPayments {
         this.active = active;
     }
 
-    public int getReccId() {
-        return reccId;
-    }
-
-    public void setReccId(int reccId) {
-        this.reccId = reccId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public int getNoOfTimes() {
-        return noOfTimes;
-    }
-
-    public void setNoOfTimes(int noOfTimes) {
-        this.noOfTimes = noOfTimes;
-    }
-
-    public boolean isActive() {
+//    public int getReccId() {
+//        return reccId;
+//    }
+//
+//    public void setReccId(int reccId) {
+//        this.reccId = reccId;
+//    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    public int getAmount() {
+//        return amount;
+//    }
+//
+//    public void setAmount(int amount) {
+//        this.amount = amount;
+//    }
+//
+//    public Date getStartDate() {
+//        return startDate;
+//    }
+//
+//    public void setStartDate(Date startDate) {
+//        this.startDate = startDate;
+//    }
+//
+//    public int getNoOfTimes() {
+//        return noOfTimes;
+//    }
+//
+//    public void setNoOfTimes(int noOfTimes) {
+//        this.noOfTimes = noOfTimes;
+//    }
+//
+    public boolean getActive() {
         return active;
     }
+//
+//    public void setActive(boolean active) {
+//        this.active = active;
+//    }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
-    public List<Transactions> getTransactions() {
-        return transactions;
-    }
 
-    public void addTransaction(Transactions transaction) {
-        this.transactions.add(transaction);
-    }
 
     public RecurringPayments(){
 

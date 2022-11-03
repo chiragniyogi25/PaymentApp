@@ -9,6 +9,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000/")
+                .allowedHeaders("http://localhost:3000/api/upload")
                 .allowedMethods("PUT", "DELETE","GET", "POST").
                 allowedHeaders("*");
     }

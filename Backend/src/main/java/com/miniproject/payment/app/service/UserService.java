@@ -2,7 +2,6 @@ package com.miniproject.payment.app.service;
 
 import com.miniproject.payment.app.dto.RecurringPaymentsDTO;
 import com.miniproject.payment.app.dto.RecurringPaymentsQDO;
-import com.miniproject.payment.app.dto.TransactionDTO;
 import com.miniproject.payment.app.dto.UserDTO;
 import com.miniproject.payment.app.entity.RecurringPayments;
 import com.miniproject.payment.app.entity.Transactions;
@@ -12,11 +11,9 @@ import com.miniproject.payment.app.repository.RecurringPaymentsRepository;
 import com.miniproject.payment.app.repository.TransactionRepository;
 import com.miniproject.payment.app.repository.UserRepository;
 import org.hibernate.PropertyValueException;
-import org.hibernate.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,14 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +36,7 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     EntityManager em;
+
     @Autowired
     private RecurringPaymentsRepository recurringPaymentsRepository;
     @Autowired
@@ -115,7 +109,7 @@ public class UserService {
             Transactions transaction = new Transactions(
                     "CR", "Money Added", amount, initial_balance, closing_balance, user);
             transactionRepository.save(transaction);
-//            userRepository.updateMoneyInUser(user.getId(), amount);
+            userRepository.save(user);
             return amount+" added";
 
         }

@@ -1,29 +1,30 @@
 package com.miniproject.payment.app.controller;
 
 import com.miniproject.payment.app.dto.*;
-import com.miniproject.payment.app.entity.AuthenticationRequest;
+import com.miniproject.payment.app.entity.AuthenticationRequestEntity;
 import com.miniproject.payment.app.entity.AuthenticationResponse;
 import com.miniproject.payment.app.entity.Transactions;
 import com.miniproject.payment.app.jpaAuth.CustomUserDetail;
 import com.miniproject.payment.app.jpaAuth.MyUserDetailsService;
 import com.miniproject.payment.app.service.UserService;
 import com.miniproject.payment.app.util.JwtUtil;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 @RestController
 //@CrossOrigin(origins = "*")
 public class UserController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -33,7 +34,7 @@ public class UserController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
-
+//http://lo
     @PostMapping("/signup")
     public String addUser(@RequestBody UserDTO userDto){
         return userService.saveUser(userDto);
@@ -44,16 +45,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestEntity authenticationRequestEntity) throws Exception {
         try{authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
-                        authenticationRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(authenticationRequestEntity.getEmail(),
+                        authenticationRequestEntity.getPassword())
         );}
         catch (Exception e){
             throw new Exception("Incorrect username or password", e);
         }
         final UserDetails userDetails=userDetailsService
-                .loadUserByUsername(authenticationRequest.getEmail());
+                .loadUserByUsername(authenticationRequestEntity.getEmail());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }

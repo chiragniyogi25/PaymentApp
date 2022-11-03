@@ -13,78 +13,78 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 public class Transactions {
-
-    public int getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Date getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public int getOpeningBal() {
-        return openingBal;
-    }
-
-    public void setOpeningBal(int openingBal) {
-        this.openingBal = openingBal;
-    }
-
-    public int getClosingBal() {
-        return closingBal;
-    }
-
-    public void setClosingBal(int closingBal) {
-        this.closingBal = closingBal;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public RecurringPayments getRecc() {
-        return recc;
-    }
-
-    public void setRecc(RecurringPayments recc) {
-        this.recc = recc;
-    }
+//
+//    public int getTransactionId() {
+//        return transactionId;
+//    }
+//
+//    public void setTransactionId(int transactionId) {
+//        this.transactionId = transactionId;
+//    }
+//
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//
+//    public Date getTransactionDate() {
+//        return transactionDate;
+//    }
+//
+//    public void setTransactionDate(Date transactionDate) {
+//        this.transactionDate = transactionDate;
+//    }
+//
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    public int getAmount() {
+//        return amount;
+//    }
+//
+//    public void setAmount(int amount) {
+//        this.amount = amount;
+//    }
+//
+//    public int getOpeningBal() {
+//        return openingBal;
+//    }
+//
+//    public void setOpeningBal(int openingBal) {
+//        this.openingBal = openingBal;
+//    }
+//
+//    public int getClosingBal() {
+//        return closingBal;
+//    }
+//
+//    public void setClosingBal(int closingBal) {
+//        this.closingBal = closingBal;
+//    }
+//
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public RecurringPayments getRecc() {
+//        return recc;
+//    }
+//
+//    public void setRecc(RecurringPayments recc) {
+//        this.recc = recc;
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

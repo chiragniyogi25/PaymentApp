@@ -21,7 +21,7 @@ public class PayBillsInvokerController {
     @Autowired
     Job processJob;
 
-    @Scheduled(fixedRate = 1200000)
+    @Scheduled(fixedRate = 3000)//0.5 sec
     @PutMapping("/paybills")
     public void payBills() throws Exception {
 
